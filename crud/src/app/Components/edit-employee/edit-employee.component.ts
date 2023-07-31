@@ -4,6 +4,7 @@ import { Employee } from 'src/app/Model/employee';
 import { EmployeeService } from 'src/app/Services/employee.service';
 import { Location } from '@angular/common'
 import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-employee',
@@ -14,40 +15,60 @@ export class EditEmployeeComponent {
   employees: Employee = {} as Employee
   backupEmployee: Employee = {} as Employee;
   id!: any
+  employeeForm!: FormGroup;
   constructor(
     private router: Router,
-    private location: Location,
     private employeeService: EmployeeService,
-    private ActivatedRoute: ActivatedRoute) {
-    this.ActivatedRoute.params.subscribe((param) => {
+    private fb: FormBuilder,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.activatedRoute.params.subscribe((param) => {
       this.id = +param['id'];
       this.getEmployeeDetails();
-    })
-}
+    });
+  }
 
+  ngOnInit() {
+    this.employeeForm = this.fb.group({
+      name: ['', [Validators.required, Validators.pattern('^[A-Za-z\\s]{3,100}$')]],
+      age: ['', [Validators.required, Validators.pattern('^(1[8-9]|[2-9][0-9]|100)$')]],
+      grossSalary: ['', [Validators.required]]
+    });
+  }
 
   getEmployeeDetails() {
     this.employeeService.getEmployeeByID(this.id).subscribe(
       (employee: Employee) => {
         this.employees = employee;
-      })
-  }
-updateEmployee() {
-  this.employeeService.updateEmployee(this.id, this.employees).subscribe(
-      (updatedEmployee: Employee) => {
-        this.employees = updatedEmployee;
-        // Show a success message using SweetAlert2
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Updated Successfully',
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          // Redirect to the employee list page after successful update
-          this.router.navigate(['/crud']);
+        this.employeeForm.patchValue({
+          name: employee.name,
+          age: employee.age,
+          grossSalary: employee.grossSalary
         });
-      },
- )
-}
+      }
+    );
+  }
+
+  updateEmployee() {
+    if (this.employeeForm.valid) {
+      this.employees.name = this.employeeForm.get('name')?.value;
+      this.employees.age = this.employeeForm.get('age')?.value;
+      this.employees.grossSalary = this.employeeForm.get('grossSalary')?.value;
+
+      this.employeeService.updateEmployee(this.id, this.employees).subscribe(
+        (updatedEmployee: Employee) => {
+          this.employees = updatedEmployee;
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Updated Successfully',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            this.router.navigate(['/crud']);
+          });
+        }
+      );
+    }
+  }
 }

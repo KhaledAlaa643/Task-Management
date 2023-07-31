@@ -1,25 +1,25 @@
 <div class="container mt-5">
-  <h2>Add Employee</h2>
-  <form (ngSubmit)="updateEmployee()" #employeeForm="ngForm">
+  <h2>Edit Employee</h2>
+  <form [formGroup]="employeeForm" (ngSubmit)="updateEmployee()">
     <div class="form-group">
       <label for="name">Name</label>
-      <input type="text" pattern="^[A-Za-z\s]{3,100}$" #fullName="ngModel" class="form-control" id="name" name="name" [(ngModel)]="employees.name" required>
-    </div>
-    <div [hidden]="fullName.valid || fullName.pristine" class="text-danger">
-      <p [hidden]="!fullName.errors?.['required']">Your Name Is Required</p>
-      <p [hidden]="!fullName.errors?.['pattern']">Invalid Name</p>
+      <input type="text" class="form-control" id="name" formControlName="name" required>
+      <div *ngIf="employeeForm.get('name')?.invalid && employeeForm.get('name')?.dirty" class="text-danger">
+        <p *ngIf="employeeForm.get('name')?.errors?.['required']">Your Name Is Required</p>
+        <p *ngIf="employeeForm.get('name')?.errors?.['pattern']">Invalid Name</p>
+      </div>
     </div>
     <div class="form-group">
       <label for="age">Age</label>
-      <input type="number" pattern="^(1[8-9]|[2-9][0-9]|100)$" #age="ngModel" class="form-control" id="age" name="age" [(ngModel)]="employees.age" required>
-    </div>
-    <div [hidden]="age.valid || age.pristine" class="text-danger">
-      <p [hidden]="!age.errors?.['required']">Age is Required</p>
-      <p [hidden]="!age.errors?.['pattern']">Invalid Age</p>
+      <input type="number" class="form-control" id="age" formControlName="age" required>
+      <div *ngIf="employeeForm.get('age')?.invalid && employeeForm.get('age')?.dirty" class="text-danger">
+        <p *ngIf="employeeForm.get('age')?.errors?.['required']">Age is Required</p>
+        <p *ngIf="employeeForm.get('age')?.errors?.['pattern']">Invalid Age</p>
+      </div>
     </div>
     <div class="form-group">
       <label for="grossSalary">Gross Salary</label>
-      <input type="number" class="form-control" id="grossSalary" name="grossSalary" [(ngModel)]="employees.grossSalary" required>
+      <input type="number" class="form-control" id="grossSalary" formControlName="grossSalary" required>
     </div>
     <button type="submit" class="btn btn-primary" [disabled]="!employeeForm.valid">Update Employee</button>
   </form>
