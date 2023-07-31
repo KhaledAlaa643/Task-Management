@@ -14,7 +14,7 @@ employee:Employee[]=[]
     return this._httpClient.get<Employee[]>(`${environment.apiURL}employee`)
   }
   deleteEmployee(employeeId:number):Observable<void>{
-    return this._httpClient.delete<void>(`http://localhost:3000/employee/${employeeId}`);
+    return this._httpClient.delete<void>(`${environment.apiURL}employee/${employeeId}`);
   }
   getEmployeeByID(id: number): Observable<Employee> {
     return this._httpClient.get<Employee>(`${environment.apiURL}employee/${id}`);
@@ -23,7 +23,7 @@ employee:Employee[]=[]
     return this.employee.map(e=>e.id)
   }
   updateEmployee(employeeId: number, employeeData: Employee): Observable<Employee> {
-    return this._httpClient.patch<Employee>(`${environment.apiURL}employee/${employeeId}`,employeeData,)
+    return this._httpClient.patch<Employee>(`${environment.apiURL}employee/${employeeId}`,employeeData)
   }
   saveEmployee(Employee:Employee){
     return this._httpClient.post<Employee>(`${environment.apiURL}employee/`,Employee)
