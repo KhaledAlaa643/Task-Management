@@ -1,1 +1,26 @@
-<p>add-employee works!</p>
+<div class="container mt-5">
+  <h2>Add Employee</h2>
+  <form (ngSubmit)="saveEmployee()" #employeeForm="ngForm">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" pattern="^[A-Za-z\s]{3,100}$" #fullName="ngModel" class="form-control" id="name" name="name" [(ngModel)]="employee.name" required>
+    </div>
+    <div [hidden]="fullName.valid || fullName.pristine" class="text-danger">
+      <p [hidden]="!fullName.errors?.['required']">Your Name Is Required</p>
+      <p [hidden]="!fullName.errors?.['pattern']">Invalid Name</p>
+    </div>
+    <div class="form-group">
+      <label for="age">Age</label>
+      <input type="number" pattern="^(1[8-9]|[2-9][0-9]|100)$" #age="ngModel" class="form-control" id="age" name="age" [(ngModel)]="employee.age" required>
+    </div>
+    <div [hidden]="age.valid || age.pristine" class="text-danger">
+      <p [hidden]="!age.errors?.['required']">Age is Required</p>
+      <p [hidden]="!age.errors?.['pattern']">Invalid Age</p>
+    </div>
+    <div class="form-group">
+      <label for="grossSalary">Gross Salary</label>
+      <input type="number" class="form-control" id="grossSalary" name="grossSalary" [(ngModel)]="employee.grossSalary" required>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="!employeeForm.valid">Save Employee</button>
+  </form>
+</div>

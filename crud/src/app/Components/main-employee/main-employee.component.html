@@ -1,1 +1,39 @@
-<p>main-employee works!</p>
+<div class="container mt-5">
+  <div class="row">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Age</th>
+      <th>gross</th>
+      <th scope="col">Net Salary</th>
+      <th scope="col">Status</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let employee of employees; let i = index">
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ employee.name }}</td>
+          <td>{{ employee.age }}</td>
+          <td>{{ employee.grossSalary }}</td>
+          <td>{{ employee.netSalary | currency }}</td>
+          <td>Active</td>
+          <td>
+            <button class="btn btn-danger" (click)="remove(employee)">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-primary" [routerLink]="['edit',employee.id]">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+          </td>
+        </tr>
+  </tbody>
+</table>
+<button class="btn btn-success" [routerLink]="['add']">Add Employee</button>
+  </div>
+</div>

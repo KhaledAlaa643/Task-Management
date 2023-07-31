@@ -5,7 +5,7 @@ import { AddEmployeeComponent } from './Components/add-employee/add-employee.com
 import { EditEmployeeComponent } from './Components/edit-employee/edit-employee.component';
 
 const routes: Routes = [
-      { path: 'crud', component: MainEmployeeComponent },
+    { path: 'crud', component: MainEmployeeComponent },
     { path: '', component: MainEmployeeComponent },
     { path: 'crud/add', component: AddEmployeeComponent },
     { path: 'crud/edit/:id', component: EditEmployeeComponent },
