@@ -9,7 +9,6 @@ import { Task } from '../Model/Tasks';
 })
 export class taskService {
 tasks:Task[]=[]
-
 constructor(private _httpClient:HttpClient) {}
 getTasks():Observable<Task[]>{
     return this._httpClient.get<Task[]>(`${environment.apiURL}`)
