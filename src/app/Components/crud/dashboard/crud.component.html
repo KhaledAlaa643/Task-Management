@@ -1,0 +1,316 @@
+<section >
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+              <div class="card-body py-4 px-4 px-md-5">
+                  <div class="header d-flex flex-column flex-md-row justify-content-between align-items-center">
+                    <div class="col-sm-12 col-md-6 d-flex align-items-center justify-content-start ">
+                      <img src="../../../../assets/avatar.svg" alt="" width="50px" height="50px">
+                      <h6 class="mx-1">My Tasks</h6>
+                    </div>
+                    <div class="col-md-6 d-flex flex-column flex-md-row align-items-center">
+                        <label class="d-flex align-items-center text-secondary my-2 pr-2 view-opt-label">
+                          <i class="fa-solid fa-filter mx-2"></i>
+                          Filter
+                        </label>
+                        <select class="custom-select custom-select-sm btn my-2" 
+                                [(ngModel)]="selectedFilter" 
+                                ((change))="filterTasks()">
+                          <option [ngValue]="'Priority'" selected>Priority</option>
+                          <option [ngValue]="'Category'">Category</option>
+                          <option [ngValue]="'Due date'">Due date</option>
+                        </select>
+                          <div id="search">
+                            <svg viewBox="0 0 420 60" xmlns="http://www.w3.org/2000/svg">
+                              <rect class="bar"/>
+                              
+                              <g class="magnifier">
+                                <circle class="glass"/>
+                                <line class="handle" x1="32" y1="32" x2="44" y2="44"></line>
+                              </g>
+
+                              <g class="sparks">
+                                <circle class="spark"/>
+                                <circle class="spark"/>
+                                <circle class="spark"/>
+                              </g>
+
+                              <g class="burst pattern-one">
+                                <circle class="particle circle"/>
+                                <path class="particle triangle"/>
+                                <circle class="particle circle"/>
+                                <path class="particle plus"/>
+                                <rect class="particle rect"/>
+                                <path class="particle triangle"/>
+                              </g>
+                              <g class="burst pattern-two">
+                                <path class="particle plus"/>
+                                <circle class="particle circle"/>
+                                <path class="particle triangle"/>
+                                <rect class="particle rect"/>
+                                <circle class="particle circle"/>
+                                <path class="particle plus"/>
+                              </g>
+                              <g class="burst pattern-three">
+                                <circle class="particle circle"/>
+                                <rect class="particle rect"/>
+                                <path class="particle plus"/>
+                                <path class="particle triangle"/>
+                                <rect class="particle rect"/>
+                                <path class="particle plus"/>
+                              </g>
+                            </svg>
+                            <input type="search" class="form-control rounded-5 search" name="" id=""[(ngModel)]="searchText" (input)="filterTasks()">
+                          </div>
+                    </div>
+                  </div>
+                  <hr class="my-4">
+                  <div class="pb-2">
+                    <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#addTask"><i class="fa-solid fa-plus"></i> Add Task</button>
+                    <hr class="my-4">
+                    <div class="modal fade" 
+                      id="addTask" 
+                      tabindex="-1" 
+                      role="dialog" 
+                      aria-labelledby="#addTask" 
+                      aria-hidden="true"
+                      data-backdrop="static" data-keyboard="false">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <span class="modal-title" id="addTask">Add a new task</span>
+                            <button type="button" (click)="closeForm()" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true" (click)="closeForm()">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="container mt-1">
+                              <form (ngSubmit)="saveTask()" #AddTaskForm="ngForm">
+                                <!-- Task Name select option -->
+                                <div class="form-group">
+                                  <label for="name">Task Name</label>
+                                  <input type="text" class="form-control" id="name" name="name" [(ngModel)]="addTask.name">
+                                </div>
+                                <!-- Description select option -->
+                                <div class="form-group">
+                                  <label for="desc">Description</label>
+                                  <textarea class="form-control" id="desc" name="description" rows="3"[(ngModel)]="addTask.description"></textarea>
+                                </div>
+                                <div class="d-flex flex-column">
+                                  <div class="row">
+                                    <!-- Priority select option -->
+                                    <div class="col-6 mb-3 options">
+                                      <label for="priority">Priority</label>
+                                      <select class="form-select" id="priority" name="priority" [(ngModel)]="addTask.priority">
+                                        <option   [ngValue]="'High'">High</option>
+                                        <option   [ngValue]="'Medium'">Medium</option>
+                                        <option   [ngValue]="'Low'">Low</option>
+                                      </select>
+                                    </div>
+                                    <!-- Tag select option -->
+                                    <div class="col-6 mb-3 options">
+                                      <label for="tag" class="w-100">Tag</label>
+                                      <select class="form-select" id="tag" name="tag" [(ngModel)]="addTask.tag">
+                                        <option [ngValue]="'Urgent'">Urgent</option>
+                                        <option [ngValue]="'Important'">Important</option>
+                                        <option [ngValue]="'Home'">Home</option>
+                                      </select>
+                                    </div>
+                                    <!-- Category select option -->
+                                    <div class="col-6 mb-3form-group options">
+                                      <label for="category" class="w-100">Category</label>
+                                      <select class="form-select" id="category"  name="category" [(ngModel)]="addTask.category">
+                                        <option   [ngValue]="'Work'">Work</option>
+                                        <option   [ngValue]="'Personal'">Personal</option>
+                                        <option   [ngValue]="'Health'">Health</option>
+                                      </select>
+                                    </div>
+                                    <!-- Project select option -->
+                                    <div class="col-6 mb-3form-group options">
+                                          <label for="project" class="w-100">Project</label>
+                                          <select class="form-select" id="project" name="project" [(ngModel)]="addTask.project">
+                                            <option [ngValue]="'Design'">Design</option>
+                                            <option [ngValue]="'Engineer'">Engineer</option>
+                                            <option [ngValue]="'Software'">Software</option>
+                                          </select>
+                                    </div>
+                                    <!-- Due Date -->
+                                    <div class="col-12 mb-3 form-group">
+                                      <label for="dueDate">Due Date</label>
+                                      <input type="date" class="form-control" id="dueDate" name="date" [(ngModel)]="addTask.date">
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="closeForm()" data-dismiss="modal">Close</button>
+                            <button type="button" (click)="saveTask()" class="btn btn-primary" data-dismiss="modal">Add Task</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row d-flex justify-content-between align-items-center mb-4 pt-2 pb-3">
+                      <div class="d-flex align-items-center px-1 pr-3">
+                          <label class="text-secondary my-2 pr-2 view-opt-label d-flex align-items-center">
+                            <i class="fas fa-sort-amount-up mx-2" ></i>
+                            Sort
+                          </label>
+                          <select class="custom-select custom-select-sm btn my-2" [(ngModel)]="selectedSortOption" (change)="sortTasks()">
+                            <option value="1">Added date</option>
+                            <option value="2">Priority</option>
+                          </select>
+                      </div>
+                  </div>
+                  <div class="">
+                    <table class="table   text-center">
+                      <thead>
+                        <tr>                          
+                          <th  class="text-start ">Task Name</th>
+                          <th  class="text-end ">Status</th>
+                          <th  class="text-end ">Due Date</th>
+                          <th  class="text-end ">Priority</th>
+                          <th  class="text-end ">Category</th>
+                          <th  class="text-end ">Project</th>
+                          <th class=""></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr  *ngFor="let task of filteredTasks; let i = index" 
+                              (click)="onRowClick($event, task.id)"  
+                              data-toggle="modal" 
+                              data-target="#editModal"
+                              [ngClass]="{'checked': task.checked || task.status =='Completed'}">
+                              <td scope="row" class="text-start col-3">
+                                <div class="d-flex align-items-center">
+                                  <mat-checkbox [(ngModel)]="task.checked" (change)="onCheckboxChange($event, task)"></mat-checkbox>
+                                  <h6 class="taskName">{{ task.name }}</h6>
+                                </div>
+                              </td>
+                              <td title="Task Status" class="text-end  status-{{task.status}}" style="width: 200px;">
+                                <span>{{ task.status }}</span>
+                              </td>
+                              <td class="text-end ">                                        
+                                <span class="text-muted" data-mdb-toggle="tooltip" title="Created date">
+                                  <p class="small mb-0"><i class="fa-solid fa-calendar-days mx-1"></i>{{ task.date | date}}</p>
+                                </span>
+                              </td>
+                              <td title="Task Priority" class="text-end  priority-{{task.priority}}">
+                                <span>{{ task.priority }}</span>
+                              </td>
+                              <td title="Task Category" class="text-end  category-{{task.category}}">
+                                <span>{{ task.category }}</span>
+                              </td>
+                              <td title="Task Project" class="text-end  project-{{task.project}}">
+                                <span>{{ task.project }}</span>
+                              </td>
+                              <td>
+                                  <span class="text-end  text-danger" data-mdb-toggle="tooltip" title="Delete Task"
+                                    (click)="remove(task)">
+                                      <i class="fa-solid fa-xmark remove"></i>
+                                  </span>
+                              </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="modal fade" id="editModal" 
+                  tabindex="-1" role="dialog" 
+                  aria-labelledby="#editModal" 
+                  aria-hidden="true"
+                  data-backdrop="static" data-keyboard="false">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <span class="modal-title" id="editModal">Edit Your Task</span>
+                          <button type="button" (click)="closeForm()" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" (click)="closeForm()">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="container mt-1">
+                            <form #editTaskForm="ngForm">
+                              <div class="form-group">
+                                <label for="name">Task Name</label>
+                                <input type="text" class="form-control" id="name" name="name" [(ngModel)]="editTask.name">
+                              </div>
+                              <div class="form-group">
+                                <label for="desc">Description</label>
+                                <textarea class="form-control" id="desc" name="description" rows="3"[(ngModel)]="editTask.description"></textarea>
+                              </div>
+                              <div class="details d-flex justify-content-center flex-column">
+                                <div class="row">
+                                  <!-- First select option -->
+                                  <div class="col-6 mb-3 options">
+                                    <label for="status">Status</label>
+                                    <select class="form-select" id="status" name="status" [(ngModel)]="editTask.status">
+                                      <option [ngValue]='"Review"'>Review</option>
+                                      <option [ngValue]='"Progressing"'>In Progress..</option>
+                                      <option [ngValue]='"Completed"'>Completed</option>
+                                      <option [ngValue]='"Holding"'>On Hold</option>
+                                    </select>
+                                  </div>
+                                  <!-- Second select option -->
+                                  <div class="col-6 mb-3 options">
+                                    <label for="priority">Priority</label>
+                                    <select class="form-select" id="priority" name="priority" [(ngModel)]="editTask.priority">
+                                      <option   [ngValue]="'High'">High</option>
+                                      <option   [ngValue]="'Medium'">Medium</option>
+                                      <option   [ngValue]="'Low'">Low</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-6 mb-3 options">
+                                    <label for="tag" class="w-100">Tag</label>
+                                    <select class="form-select" id="tag" name="tag" [(ngModel)]="editTask.tag">
+                                      <option [ngValue]="'Urgent'">Urgent</option>
+                                      <option [ngValue]="'Important'">Important</option>
+                                      <option [ngValue]="'Home'">Home</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-6 mb-3 options">
+                                    <label for="project" class="w-100">Project</label>
+                                    <select class="form-select" id="project" name="project" [(ngModel)]="editTask.project">
+                                      <option [ngValue]="'Design'">Design</option>
+                                      <option [ngValue]="'Engineer'">Engineer</option>
+                                      <option [ngValue]="'Software'">Software</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <!-- Additional form fields -->
+                                <div class="row">
+                                  <!-- Third select option -->
+                                  <!-- Category -->
+                                  <div class="col-6 mb-3form-group options">
+                                    <label for="category" class="w-100">Category</label>
+                                    <select class="form-select" id="category"  name="category" [(ngModel)]="editTask.category">
+                                      <option   [ngValue]="'Work'">Work</option>
+                                      <option   [ngValue]="'Personal'">Personal</option>
+                                      <option   [ngValue]="'Health'">Health</option>
+                                    </select>
+                                  </div>
+                                  <!-- Due Date -->
+                                  <div class="col-6 mb-3 form-group">
+                                    <label for="dueDate">Due Date</label>
+                                    <input type="date" class="form-control" id="dueDate" name="date" [(ngModel)]="editTask.date">
+                                  </div>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" (click)="closeForm()" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary" (click)="updateTask(selectedTaskId)" data-dismiss="modal">Update Task</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>                     
+              </div>
+            </div>
+        </div>
+    </div>
+</section>
