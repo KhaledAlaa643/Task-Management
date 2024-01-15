@@ -85,62 +85,68 @@
                           </div>
                           <div class="modal-body">
                             <div class="container mt-1">
-                              <form (ngSubmit)="saveTask()" #AddTaskForm="ngForm">
+                              <form (ngSubmit)="saveTask()" [formGroup]="addTaskFormValidation">
                                 <!-- Task Name select option -->
                                 <div class="form-group">
-                                  <label for="name">Task Name</label>
-                                  <input type="text" class="form-control" id="name" name="name" [(ngModel)]="addTask.name">
-                                </div>
-                                <!-- Description select option -->
-                                <div class="form-group">
-                                  <label for="desc">Description</label>
-                                  <textarea class="form-control" id="desc" name="description" rows="3"[(ngModel)]="addTask.description"></textarea>
-                                </div>
-                                <div class="d-flex flex-column">
-                                  <div class="row">
-                                    <!-- Priority select option -->
-                                    <div class="col-6 mb-3 options">
-                                      <label for="priority">Priority</label>
-                                      <select class="form-select" id="priority" name="priority" [(ngModel)]="addTask.priority">
-                                        <option   [ngValue]="'High'">High</option>
-                                        <option   [ngValue]="'Medium'">Medium</option>
-                                        <option   [ngValue]="'Low'">Low</option>
-                                      </select>
-                                    </div>
-                                    <!-- Tag select option -->
-                                    <div class="col-6 mb-3 options">
-                                      <label for="tag" class="w-100">Tag</label>
-                                      <select class="form-select" id="tag" name="tag" [(ngModel)]="addTask.tag">
-                                        <option [ngValue]="'Urgent'">Urgent</option>
-                                        <option [ngValue]="'Important'">Important</option>
-                                        <option [ngValue]="'Home'">Home</option>
-                                      </select>
-                                    </div>
-                                    <!-- Category select option -->
-                                    <div class="col-6 mb-3form-group options">
-                                      <label for="category" class="w-100">Category</label>
-                                      <select class="form-select" id="category"  name="category" [(ngModel)]="addTask.category">
-                                        <option   [ngValue]="'Work'">Work</option>
-                                        <option   [ngValue]="'Personal'">Personal</option>
-                                        <option   [ngValue]="'Health'">Health</option>
-                                      </select>
-                                    </div>
-                                    <!-- Project select option -->
-                                    <div class="col-6 mb-3form-group options">
-                                          <label for="project" class="w-100">Project</label>
-                                          <select class="form-select" id="project" name="project" [(ngModel)]="addTask.project">
-                                            <option [ngValue]="'Design'">Design</option>
-                                            <option [ngValue]="'Engineer'">Engineer</option>
-                                            <option [ngValue]="'Software'">Software</option>
-                                          </select>
-                                    </div>
-                                    <!-- Due Date -->
-                                    <div class="col-12 mb-3 form-group">
-                                      <label for="dueDate">Due Date</label>
-                                      <input type="date" class="form-control" id="dueDate" name="date" [(ngModel)]="addTask.date">
-                                    </div>
+                                  <div class="name">
+                                    <label for="name">Task Name</label>
+                                    <input  type="text" class="form-control" id="name" formControlName="name" >
+                                     <mat-error *ngIf="addTaskFormValidation.get('name')!.hasError('required')">
+                                      Task Name is required.
+                                    </mat-error>
+                                    <mat-error *ngIf="addTaskFormValidation.get('name')!.hasError('minlength')">
+                                      Task Name must be at least 3 characters long.
+                                    </mat-error>
                                   </div>
-                                  <div class="row">
+                                  <!-- Description select option -->
+                                  <div class="description">
+                                    <label for="desc">Description</label>
+                                    <textarea class="form-control" id="desc" formControlName="description" rows="3"></textarea>
+                                  </div>
+                                  <div class="d-flex flex-column">
+                                    <div class="row">
+                                      <!-- Priority select option -->
+                                      <div class="col-6 mb-3 options">
+                                        <label for="priority">Priority</label>
+                                        <select class="form-select" id="priority" formControlName="priority">
+                                          <option   [ngValue]="'High'">High</option>
+                                          <option   [ngValue]="'Medium'">Medium</option>
+                                          <option   [ngValue]="'Low'">Low</option>
+                                        </select>
+                                      </div>
+                                      <!-- Tag select option -->
+                                      <div class="col-6 mb-3 options">
+                                        <label for="tag" class="w-100">Tag</label>
+                                        <select class="form-select" id="tag" formControlName="tag" >
+                                          <option [ngValue]="'Urgent'">Urgent</option>
+                                          <option [ngValue]="'Important'">Important</option>
+                                          <option [ngValue]="'Home'">Home</option>
+                                        </select>
+                                      </div>
+                                      <!-- Category select option -->
+                                      <div class="col-6 mb-3 options">
+                                        <label for="category" class="w-100">Category</label>
+                                        <select class="form-select" id="category"  formControlName="category">
+                                          <option   [ngValue]="'Work'">Work</option>
+                                          <option   [ngValue]="'Personal'">Personal</option>
+                                          <option   [ngValue]="'Health'">Health</option>
+                                        </select>
+                                      </div>
+                                      <!-- Project select option -->
+                                      <div class="col-6 mb-3 options">
+                                            <label for="project" class="w-100">Project</label>
+                                            <select class="form-select" id="project" formControlName="project" >
+                                              <option [ngValue]="'Design'">Design</option>
+                                              <option [ngValue]="'Engineer'">Engineer</option>
+                                              <option [ngValue]="'Software'">Software</option>
+                                            </select>
+                                      </div>
+                                      <!-- Due Date -->
+                                      <div class="col-12 mb-3 ">
+                                        <label for="dueDate">Due Date</label>
+                                        <input type="date" class="form-control" id="dueDate" formControlName="date">
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                               </form>
@@ -148,7 +154,7 @@
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" (click)="closeForm()" data-dismiss="modal">Close</button>
-                            <button type="button" (click)="saveTask()" class="btn btn-primary" data-dismiss="modal">Add Task</button>
+                            <button type="button" [disabled]="addTaskFormValidation.invalid" (click)="saveTask()" class="btn btn-primary" data-dismiss="modal">Add Task</button>
                           </div>
                         </div>
                       </div>
@@ -233,21 +239,21 @@
                         </div>
                         <div class="modal-body">
                           <div class="container mt-1">
-                            <form #editTaskForm="ngForm">
+                            <form [formGroup]="editFormTask">
                               <div class="form-group">
                                 <label for="name">Task Name</label>
-                                <input type="text" class="form-control" id="name" name="name" [(ngModel)]="editTask.name">
-                              </div>
-                              <div class="form-group">
+                                <input type="text" class="form-control" id="name" formControlName="name" >
+                              <!-- </div> -->
+                              <!-- <div class="form-group"> -->
                                 <label for="desc">Description</label>
-                                <textarea class="form-control" id="desc" name="description" rows="3"[(ngModel)]="editTask.description"></textarea>
-                              </div>
+                                <textarea class="form-control" id="desc" formControlName="description" rows="3"></textarea>
+                              <!-- </div> -->
                               <div class="details d-flex justify-content-center flex-column">
                                 <div class="row">
                                   <!-- First select option -->
                                   <div class="col-6 mb-3 options">
                                     <label for="status">Status</label>
-                                    <select class="form-select" id="status" name="status" [(ngModel)]="editTask.status">
+                                    <select class="form-select" id="status" formControlName="status" >
                                       <option [ngValue]='"Review"'>Review</option>
                                       <option [ngValue]='"Progressing"'>In Progress..</option>
                                       <option [ngValue]='"Completed"'>Completed</option>
@@ -257,7 +263,7 @@
                                   <!-- Second select option -->
                                   <div class="col-6 mb-3 options">
                                     <label for="priority">Priority</label>
-                                    <select class="form-select" id="priority" name="priority" [(ngModel)]="editTask.priority">
+                                    <select class="form-select" id="priority" formControlName="priority" >
                                       <option   [ngValue]="'High'">High</option>
                                       <option   [ngValue]="'Medium'">Medium</option>
                                       <option   [ngValue]="'Low'">Low</option>
@@ -265,7 +271,7 @@
                                   </div>
                                   <div class="col-6 mb-3 options">
                                     <label for="tag" class="w-100">Tag</label>
-                                    <select class="form-select" id="tag" name="tag" [(ngModel)]="editTask.tag">
+                                    <select class="form-select" id="tag" formControlName="tag" >
                                       <option [ngValue]="'Urgent'">Urgent</option>
                                       <option [ngValue]="'Important'">Important</option>
                                       <option [ngValue]="'Home'">Home</option>
@@ -273,7 +279,7 @@
                                   </div>
                                   <div class="col-6 mb-3 options">
                                     <label for="project" class="w-100">Project</label>
-                                    <select class="form-select" id="project" name="project" [(ngModel)]="editTask.project">
+                                    <select class="form-select" id="project" formControlName="project" >
                                       <option [ngValue]="'Design'">Design</option>
                                       <option [ngValue]="'Engineer'">Engineer</option>
                                       <option [ngValue]="'Software'">Software</option>
@@ -284,20 +290,21 @@
                                 <div class="row">
                                   <!-- Third select option -->
                                   <!-- Category -->
-                                  <div class="col-6 mb-3form-group options">
+                                  <div class="col-6 mb-3 options">
                                     <label for="category" class="w-100">Category</label>
-                                    <select class="form-select" id="category"  name="category" [(ngModel)]="editTask.category">
+                                    <select class="form-select" id="category"  formControlName="category" >
                                       <option   [ngValue]="'Work'">Work</option>
                                       <option   [ngValue]="'Personal'">Personal</option>
                                       <option   [ngValue]="'Health'">Health</option>
                                     </select>
                                   </div>
                                   <!-- Due Date -->
-                                  <div class="col-6 mb-3 form-group">
+                                  <div class="col-6 mb-3">
                                     <label for="dueDate">Due Date</label>
-                                    <input type="date" class="form-control" id="dueDate" name="date" [(ngModel)]="editTask.date">
+                                    <input type="date" class="form-control" id="dueDate" formControlName="date" >
                                   </div>
                                 </div>
+                              </div>
                               </div>
                             </form>
                           </div>

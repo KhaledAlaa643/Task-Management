@@ -4,6 +4,8 @@ import Swal from 'sweetalert2';
 import * as moment from 'moment';
 import { Task } from 'src/app/Model/Tasks';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormService } from 'src/app/Service/form.service';
 
 
 @Component({
@@ -14,8 +16,6 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 export class CrudComponent implements OnInit {
   tasks: Task[] = [];
   filteredTasks: Task[] = [];
-  addTask: Task = { status: 'Review',checked:false} as Task;
-  editTask: Task = {} as Task;
   @ViewChild('AddTaskForm') addTaskForm: any;
   @ViewChild ('checkbox') checkbox!:string
   selectedTaskId!: number;
@@ -24,20 +24,22 @@ export class CrudComponent implements OnInit {
   selectedDate!: Date | any;
   checked: boolean = false;
   selectedSortOption: string = '1';
-  originalStatus!:string
-constructor(private taskService: taskService) { }
+  originalStatus!: string
+  addTaskFormValidation!: FormGroup;
+  editFormTask!: FormGroup;
+constructor(private taskService: taskService , private formService:FormService) { 
+  this.addTaskFormValidation = this.formService.addTaskFormValidation
+  this.editFormTask = this.formService.editFormTask
+
+}
   ngOnInit() {
     this.loadTasks();    
   }
 loadTasks() {
-      this.taskService.getTasks().subscribe(
-        (data) => {
-          this.tasks = data;
-          this.filteredTasks = [...this.tasks];
-          console.log(this.filteredTasks);
-          
-      }
-    );
+  this.taskService.getTasks().subscribe(
+    (data) => {
+      this.filteredTasks = data;
+    });
 }
 remove(task: Task) {
   Swal.fire({
@@ -63,12 +65,12 @@ remove(task: Task) {
   }
 });
 }
-  
 saveTask() {
-  this.taskService.saveTask(this.addTask).subscribe({
+  this.taskService.saveTask(this.formService.addTaskFormValidation.value).subscribe({
     next: (data) => {
       this.filteredTasks.push(data);
-      this.closeForm();
+      this.closeForm()
+      this.formService.addTaskFormValidation.controls['status'].patchValue('Review')
       Swal.fire({
         position: 'center',
         icon: 'success',
@@ -103,12 +105,12 @@ onCheckboxChange(event: MatCheckboxChange, task: Task) {
 getTaskDetails(taskId: number) {
   this.taskService.getTaskByID(taskId).subscribe(
     (task: Task) => {
-      this.editTask = task      
+      this.editFormTask.patchValue(task);
   });
 }
 
 updateTask(taskId: number) {
-  this.taskService.updateTask(taskId, this.editTask).subscribe(
+  this.taskService.updateTask(taskId, this.editFormTask.value).subscribe(
     (updatedTask: Task) => {
       const index = this.filteredTasks.findIndex(e => e.id === updatedTask.id);
       this.closeForm();
@@ -116,7 +118,7 @@ updateTask(taskId: number) {
         this.filteredTasks[index] = updatedTask;
       this.closeForm();
       }
-      this.editTask = updatedTask;
+      this.editFormTask.patchValue(updatedTask);
       this.closeForm();
       Swal.fire({
         position: 'center',
@@ -129,11 +131,8 @@ updateTask(taskId: number) {
     });
 }
 closeForm() {
-    this.addTaskForm.resetForm();
-    this.addTask = { status: 'Review'} as Task
+  this.addTaskFormValidation.reset();
 }
-  
-  
 filterTasks() {
     this.selectedDate = this.searchText ? moment(this.searchText, 'YYYY-MM-DD').toDate() : null;
     switch (this.selectedFilter) {
